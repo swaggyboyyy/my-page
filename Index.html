@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ครบรอบของเรา ❤️</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Prompt", sans-serif;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  color: white;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity 1s;
+}
+
+#page2,#page3 { opacity: 0; pointer-events: none; }
+
+button {
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: none;
+  background: #ff4b5c;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  position: relative;
+}
+
+#typedText {
+  margin-top: 20px;
+  font-size: 20px;
+  max-width: 80%;
+  line-height: 1.6;
+  text-align: center;
+}
+
+#counter {
+  margin-top: 10px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.heart {
+  position: absolute;
+  color: #ff4b5c;
+  animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-800px); opacity: 0; }
+}
+
+#photos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+#photos img {
+  width: 200px;
+  border-radius: 15px;
+}
+iframe { width:0;height:0;border:none; }
+</style>
+</head>
+<body>
+
+<iframe id="ytplayer" allow="autoplay"></iframe>
+
+<!-- หน้าแรก -->
+<div class="page" id="page1">
+  <h1>💌 มีอะไรจะให้เธอดู</h1>
+  <button onclick="startLove()">ยอมรับ 💖</button>
+</div>
+
+<!-- หน้า 2 -->
+<div class="page" id="page2">
+  <h1>ครบรอบของเรา ❤️</h1>
+  <div id="counter"></div>
+
+  <!-- รูปขึ้นพร้อมกัน -->
+  <div id="photos">
+    <img src="your-image1.jpg">
+    <img src="your-image2.jpg">
+    <img src="your-image3.jpg">
+    <!-- เพิ่มรูปอื่น ๆ ได้ตามต้องการ -->
+  </div>
+
+  <div id="typedText"></div>
+</div>
+
+<!-- หน้า 3 -->
+<div class="page" id="page3">
+  <h1>แล้วเธอรักฉันไหม? 🥰</h1>
+  <button id="loveBtn">รักค่ะ/รักครับ 💖</button>
+</div>
+
+<script>
+// วันเริ่มคบ
+const startDate = new Date("2024-03-01"); // <<< แก้ตรงนี้
+
+function startLove() {
+  document.getElementById("page1").style.opacity = "0";
+  setTimeout(()=>{
+    document.getElementById("page1").style.display="none";
+    const p2 = document.getElementById("page2");
+    p2.style.opacity="1";
+    p2.style.pointerEvents="auto";
+    typeText();
+    startCounter();
+    setInterval(createHeart,300);
+    document.getElementById("ytplayer").src="https://www.youtube.com/embed/0Nxv4Btut4I?autoplay=1";
+    
+    setTimeout(showPage3, text.length*50 + 2000);
+  },800);
+}
+
+// ข้อความทีละตัว
+const text = `อยู่ด้วยกันมานานขนาดนี้แล้วนะ 💕
+
+ทุกช่วงเวลาที่มีเธอ มันมีค่ามากจริง ๆ
+
+ขอบคุณที่ยังอยู่ข้างกัน
+และหวังว่าเราจะอยู่ด้วยกันไปอีกนาน ๆ เลยนะ 🥺❤️`;
+
+let i = 0;
+function typeText() {
+  if(i<text.length){
+    document.getElementById("typedText").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeText,50);
+  }
+}
+
+// นับวันจริง
+function startCounter() {
+  setInterval(()=>{
+    const now = new Date();
+    const diff = now - startDate;
+    const days = Math.floor(diff/(1000*60*60*24));
+    const hours = Math.floor(diff/(1000*60*60))%24;
+    const minutes = Math.floor(diff/(1000*60))%60;
+    const seconds = Math.floor(diff/1000)%60;
+    document.getElementById("counter").innerHTML = `เราคบกันมาแล้ว 💕<br>${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`;
+  },1000);
+}
+
+// หัวใจลอย
+function createHeart(){
+  const heart = document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="💖";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(Math.random()*20+10)+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),5000);
+}
+
+// ไปหน้า 3
+function showPage3(){
+  const p2 = document.getElementById("page2");
+  p2.style.opacity="0";
+  setTimeout(()=>{
+    p2.style.display="none";
+    const p3 = document.getElementById("page3");
+    p3.style.opacity="1";
+    p3.style.pointerEvents="auto";
+  },800);
+}
+
+// ปุ่มรัก (หนีไม่ได้จริง)
+const loveBtn = document.getElementById("loveBtn");
+loveBtn.addEventListener("mouseenter",()=>{
+  const x = Math.random()*70 + 15;
+  const y = Math.random()*70 + 15;
+  loveBtn.style.position="absolute";
+  loveBtn.style.left = x+"vw";
+  loveBtn.style.top = y+"vh";
+});
+loveBtn.addEventListener("click",()=>{
+  alert("รู้แล้ววว! ❤️ รักกันตลอดไปนะ!");
+});
+</script>
+</body>
+</html>
